@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.StudentRideReview">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/confirmlocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Location"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="20dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Location"
+                android:id="@+id/startlocation"
+                app:layout_constraintTop_toBottomOf="@id/confirmlocation"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                />
+            <EditText
+                android:id="@+id/start_location_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/startlocation"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                android:background="@drawable/edit_text_background"
+                android:drawableLeft="@drawable/home"
+                android:hint="Starting Location"
+                android:gravity="center_horizontal"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Destination Location"
+                android:id="@+id/destinationlocation"
+                app:layout_constraintTop_toBottomOf="@id/start_location_edittext"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                />
+            <EditText
+                android:id="@+id/destination_location_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/destinationlocation"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                android:background="@drawable/edit_text_background"
+                android:drawableLeft="@drawable/home"
+                android:hint="Destination Location"
+                android:gravity="center_horizontal"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter SUID for confirmation"
+                android:id="@+id/suidtext"
+                app:layout_constraintTop_toBottomOf="@id/destination_location_edittext"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                />
+            <EditText
+                android:id="@+id/suid_confirmation_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/suidtext"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                android:background="@drawable/edit_text_background"
+                android:drawableLeft="@drawable/idcard"
+                android:hint="Enter SUID for confirmation"
+                android:gravity="center_horizontal"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wait Time Approx."
+                android:id="@+id/waittime"
+                app:layout_constraintTop_toBottomOf="@id/suid_confirmation_edittext"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.00 Hours"
+                android:id="@+id/wait_time_counter"
+                app:layout_constraintTop_toBottomOf="@id/waittime"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                android:textSize="20sp"
+                android:textColor="@android:color/holo_red_dark"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Rides Pending"
+                android:id="@+id/ridespending"
+                app:layout_constraintTop_toBottomOf="@id/wait_time_counter"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="21 Requests"
+                android:id="@+id/rides_counter"
+                app:layout_constraintTop_toBottomOf="@id/ridespending"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_margin="20dp"
+                android:textSize="20sp"
+                android:textColor="@android:color/holo_red_dark"
+                android:textStyle="bold"
+                />
+            <Button
+                android:id="@+id/confirm_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/rides_counter"
+                android:layout_margin="30dp"
+                android:text="Confirm Ride"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
