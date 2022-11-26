@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.example.dpsv2.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 
 class StudentProfile : AppCompatActivity() {
     private lateinit var etName: EditText
@@ -34,12 +35,18 @@ class StudentProfile : AppCompatActivity() {
         etEmergency = findViewById(R.id.et_des)
 
         val sharedpref = this?.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
-        etSUID.setText(sharedpref.getString("STUDENT_SUID","1"))
-        etName.setText(sharedpref.getString("STUDENT_NAME","2"))
-        etAddress.setText(sharedpref.getString("STUDENT_ADDRESS","3"))
-        etEmail.setText(sharedpref.getString("STUDENT_EMAIL","4"))
-        etContactNo.setText(sharedpref.getString("STUDENT_NUMBER","5"))
-        etEmergency.setText(sharedpref.getString("STUDENT_EMERGENCY","6"))
+        etSUID.setText(sharedpref.getString("STUDENT_SUID",""))
+        etName.setText(sharedpref.getString("STUDENT_NAME",""))
+        etAddress.setText(sharedpref.getString("STUDENT_ADDRESS",""))
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
+
+        if (acct != null) {
+            etEmail.setText(acct.email)
+        }else{
+            etEmail.setText(sharedpref.getString("STUDENT_EMAIL",""))
+        }
+        etContactNo.setText(sharedpref.getString("STUDENT_NUMBER",""))
+        etEmergency.setText(sharedpref.getString("STUDENT_EMERGENCY",""))
 
 
         // To show back button in actionbar

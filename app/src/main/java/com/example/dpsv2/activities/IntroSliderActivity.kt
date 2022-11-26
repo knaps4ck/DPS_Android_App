@@ -47,7 +47,7 @@ class IntroSliderActivity : OnboarderActivity(), OnboarderPageChangeListener {
                     multilineCentered = true
                 )
             },onboarderPage {
-                backgroundColor = color(R.color.teal_200)
+                backgroundColor = color(android.R.color.holo_orange_dark)
 
                 image = OnboarderImage(
                     imageResId = R.drawable.ic_launcher_background
@@ -66,7 +66,7 @@ class IntroSliderActivity : OnboarderActivity(), OnboarderPageChangeListener {
                     multilineCentered = true
                 )
             },onboarderPage {
-                backgroundColor = color(R.color.teal_200)
+                backgroundColor = color(android.R.color.holo_purple)
 
                 image = OnboarderImage(
                     imageResId = R.drawable.ic_launcher_background

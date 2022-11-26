@@ -1,6 +1,7 @@
 package com.example.dpsv2.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,6 +23,8 @@ import com.example.dpsv2.BuildConfig
 import com.example.dpsv2.MainActivity
 import com.example.dpsv2.R
 import com.example.dpsv2.databinding.ActivityStudentHomeBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -47,13 +50,12 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
     private var locationManager : LocationManager? = null
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val sharedpref = this?.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
-
         val names = sharedpref.getStringSet("RECENT_SEARCHES", emptySet())!!.toTypedArray()
         Log.e("RECENT_SEARCHES_FETCHED",names.contentToString())
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
@@ -74,18 +76,18 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     101
                 )
+
+            }else{
+                locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f,locationListener )
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f,locationListener )
-
         bottomSheetDialog = findViewById(R.id.student_home_bottom_sheet)
         var mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheetDialog)
         mBottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {}
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//                header_Arrow_Image.setRotation(slideOffset * 180)
             }
         })
 
@@ -186,17 +188,30 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
             R.id.student_prev_ride -> return true
             R.id.student_view_cancel_ride -> return true
             R.id.student_edit_profile -> {
-                finish()
+
                 val intent = Intent(this@StudentHome, StudentProfile::class.java)
                 startActivity(intent)
             }
             R.id.student_signout -> {
-                val firebase = FirebaseAuth.getInstance()
-                firebase.signOut()
+                FirebaseAuth.getInstance().signOut()
+                // Configure sign-in to request the user's ID, email address, and basic
+// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
 
-                finish()
-                val intent = Intent(this@StudentHome, MainActivity::class.java)
-                startActivity(intent)
+                // Configure sign-in to request the user's ID, email address, and basic
+// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build()
+                // Build a GoogleSignInClient with the options specified by gso.
+                val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+                mGoogleSignInClient.signOut().addOnCompleteListener(this)
+                {
+                    val intent = Intent(this@StudentHome, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
+
             }
 
         }
@@ -206,13 +221,14 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         val curr_address = findViewById<TextView>(R.id.current_address)
-        if (curr_address.text != "Fetching Location ...") {
-            val intent = Intent(this@StudentHome, StudentRideReview::class.java)
-            intent.putExtra("DESTINATION", curr_address.text)
-            finish()
-            startActivity(intent)
-        }else{
-            Toast.makeText(this,"Please wait for Location...", Toast.LENGTH_SHORT).show()
+        curr_address.setOnClickListener {
+            if (curr_address.text != "Fetching Location ...") {
+                val intent = Intent(this@StudentHome, StudentRideReview::class.java)
+                intent.putExtra("DESTINATION", curr_address.text)
+                startActivity(intent)
+            }else{
+                Toast.makeText(this,"Please wait for Location...", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

@@ -2,9 +2,11 @@ package com.example.dpsv2
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dpsv2.activities.DriverHome
 import com.example.dpsv2.activities.StudentProfile
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         var googleBtn = findViewById<TextView>(R.id.student_login);
 
         gso =
@@ -30,11 +33,20 @@ class MainActivity : AppCompatActivity() {
         gsc = GoogleSignIn.getClient(this, gso)
 
         val acct = GoogleSignIn.getLastSignedInAccount(this)
+
         if (acct != null) {
             navigateToSecondActivity()
+        }else{
+            val sharedpref = this?.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
+            sharedpref.edit().clear().commit()
         }
         googleBtn.setOnClickListener {
             signIn()
+        }
+
+        findViewById<Button>(R.id.driver_login).setOnClickListener {
+            val intent = Intent(this@MainActivity, DriverHome::class.java)
+            startActivity(intent)
         }
 
     }
