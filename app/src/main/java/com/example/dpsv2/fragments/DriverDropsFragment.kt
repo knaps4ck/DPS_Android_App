@@ -1,60 +1,94 @@
 package com.example.dpsv2.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.dpsv2.R
+import com.example.dpsv2.adapters.DriverDropAdapter
+import com.example.dpsv2.adapters.DriverPickupAdapter
+import com.example.dpsv2.models.Rides
+import com.example.dpsv2.utils.Constants
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DriverDropsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DriverDropsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var droplist : ArrayList<Rides>
+    private lateinit var classConstants: Constants
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var dropadapter: DriverDropAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_driver_drops, container, false)
+        classConstants = Constants()
+        val view: View = inflater.inflate(R.layout.fragment_driver_drops, container, false)
+        val activity = activity as Context
+        recyclerView = view.findViewById<RecyclerView>(R.id.driver_drops_recycler)
+        droplist = arrayListOf<Rides>()
+        getRidesData()
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DriverDropsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DriverDropsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun getRidesData(){
+        val database : DatabaseReference = FirebaseDatabase.getInstance().getReference("rides")
+        database.addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                droplist.clear()
+                if (snapshot.exists()){
+                    for (ridesnapshot in snapshot.children){
+                        val ride = ridesnapshot.getValue(Rides::class.java)
+                        if (ride!!.ridestatus.equals(classConstants.DROP_RIDE_STATUS)){
+                            droplist.add(ride)
+                        }
+                    }
+                    dropadapter = DriverDropAdapter(
+                        droplist,
+                        ::onNavigateClickCallback,
+                        ::onDropClickCallback)
+                    recyclerView.adapter = dropadapter
+                    dropadapter.notifyDataSetChanged()
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                throw error.toException()
+            }
+
+        })
+    }
+
+
+    fun onNavigateClickCallback(ride: Rides) {
+        val gmmIntentUri = Uri.parse("geo:0,0?q=${ride.destination}")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun onDropClickCallback(ride: Rides) {
+        Toast.makeText(context, ride.rideID, Toast.LENGTH_SHORT).show()
+        val database = Firebase.database.reference
+        database.child("rides")
+            .child(ride.rideID!!)
+            .child("ridestatus")
+            .setValue(classConstants.PREVIEW_RIDE_STATUS)
+
+        dropadapter.notifyDataSetChanged()
+
     }
 }

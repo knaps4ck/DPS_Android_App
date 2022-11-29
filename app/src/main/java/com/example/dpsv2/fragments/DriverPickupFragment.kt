@@ -1,60 +1,96 @@
 package com.example.dpsv2.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.dpsv2.R
+import com.example.dpsv2.adapters.DriverPickupAdapter
+import com.example.dpsv2.models.Rides
+import com.example.dpsv2.utils.Constants
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DriverPickupFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DriverPickupFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class DriverPickupFragment : Fragment()  {
+    private lateinit var pickuplist : ArrayList<Rides>
+    private lateinit var classConstants: Constants
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var pickupadapter: DriverPickupAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_driver_pickup, container, false)
+        classConstants = Constants()
+        val view: View = inflater.inflate(R.layout.fragment_driver_pickup, container, false)
+        val activity = activity as Context
+        recyclerView = view.findViewById<RecyclerView>(R.id.driver_pickup_recucler)
+        pickuplist = arrayListOf<Rides>()
+        getRidesData()
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DriverPickupFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DriverPickupFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun getRidesData(){
+        val database : DatabaseReference = FirebaseDatabase.getInstance().getReference("rides")
+        database.addValueEventListener(object : ValueEventListener{
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                pickuplist.clear()
+                if (snapshot.exists()){
+                    for (ridesnapshot in snapshot.children){
+                        val ride = ridesnapshot.getValue(Rides::class.java)
+                        if (ride!!.ridestatus.equals(classConstants.PICKUP_RIDE_STATUS)){
+                            pickuplist.add(ride)
+                        }
+                    }
+
+                    pickupadapter = DriverPickupAdapter(
+                        pickuplist,
+                        ::onNavigateClickCallback,
+                        ::onPickupClickCallback)
+                    recyclerView.adapter = pickupadapter
+                    pickupadapter.notifyDataSetChanged()
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                throw error.toException()
+            }
+
+        })
+    }
+
+
+
+    fun onNavigateClickCallback(ride: Rides) {
+        val gmmIntentUri = Uri.parse("geo:0,0?q=${ride.source}")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun onPickupClickCallback(ride: Rides) {
+        Toast.makeText(context, ride.rideID, Toast.LENGTH_SHORT).show()
+        val database = Firebase.database.reference
+        database.child("rides")
+            .child(ride.rideID!!)
+            .child("ridestatus")
+            .setValue(classConstants.DROP_RIDE_STATUS)
+
+        pickupadapter.notifyDataSetChanged()
+
     }
 }
