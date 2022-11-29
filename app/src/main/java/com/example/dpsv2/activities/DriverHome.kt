@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.dpsv2.R
-import com.example.dpsv2.adapters.ViewPagerAdapter
+import com.example.dpsv2.adapters.DriverViewPagerAdapter
 import com.example.dpsv2.utils.LocationService
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationRequest.create
@@ -26,7 +26,7 @@ class DriverHome : AppCompatActivity() {
 
         val viewPager = findViewById<ViewPager2>(R.id.driverhome_viewpager)
         val tabLayout = findViewById<TabLayout>(R.id.driverhome_tablayout)
-        val adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+        val adapter = DriverViewPagerAdapter(supportFragmentManager, lifecycle)
         viewPager.adapter = adapter
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
