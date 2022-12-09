@@ -6,4 +6,5 @@ class Constants {
     val PICKUP_RIDE_STATUS : String = "2"
     val DROP_RIDE_STATUS : String = "3"
     val PREVIEW_RIDE_STATUS : String = "4"
+    val REJECT_RIDE_STATUS: String = "5"
 }

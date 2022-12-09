@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,6 +53,7 @@ class DriverPickupFragment : Fragment()  {
                     for (ridesnapshot in snapshot.children){
                         val ride = ridesnapshot.getValue(Rides::class.java)
                         if (ride!!.ridestatus.equals(classConstants.PICKUP_RIDE_STATUS)){
+                            Log.d("Fortestring", ride.toString())
                             pickuplist.add(ride)
                         }
                     }

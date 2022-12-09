@@ -1,10 +1,17 @@
 package com.example.dpsv2.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.example.dpsv2.R
 import com.example.dpsv2.adapters.AdminViewPagerAdapter
+import com.example.dpsv2.utils.LocationService
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -12,8 +19,9 @@ class AdminHome : AppCompatActivity() {
     val tablayoutArray = arrayOf(
         "Drivers",
         "Requests",
-        "Previous Rides"
+        "Completed Rides"
     )
+    val dropdownlist = arrayOf("A", "B", "C")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_home)
@@ -27,5 +35,13 @@ class AdminHome : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tablayoutArray[position]
         }.attach()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(applicationContext, LocationService::class.java).apply {
+            action = LocationService.ACTION_START
+            startService(this)
+        }
     }
 }

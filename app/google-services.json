@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "888860597377",
+    "firebase_url": "https://dpsv2-d7562-default-rtdb.firebaseio.com",
     "project_id": "dpsv2-d7562",
     "storage_bucket": "dpsv2-d7562.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "com.example.dpsv2",
             "certificate_hash": "2d7e4d2f3126b6e75a90eca4832a9585d68aa803"
+          }
+        },
+        {
+          "client_id": "888860597377-f7btmjpu8fskb01c3n8fmioe3os5qhp5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dpsv2",
+            "certificate_hash": "56ce06e75b7bde962834af75c202d5a04e72003e"
           }
         },
         {

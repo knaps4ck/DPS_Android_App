@@ -2,10 +2,11 @@ package com.example.dpsv2
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.util.Log
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dpsv2.activities.AdminHome
 import com.example.dpsv2.activities.DriverHome
 import com.example.dpsv2.activities.StudentProfile
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -49,6 +50,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        findViewById<Button>(R.id.admin_login).setOnClickListener {
+            val intent = Intent(this@MainActivity, AdminHome::class.java)
+            startActivity(intent)
+        }
     }
     private fun signIn() {
         val signInIntent = gsc.signInIntent
@@ -62,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 task.getResult(ApiException::class.java)
                 navigateToSecondActivity()
             } catch (e: ApiException) {
+                Log.e("Sign_in", e.toString())
                 Toast.makeText(applicationContext, "Something went wrong", Toast.LENGTH_SHORT)
                     .show()
             }

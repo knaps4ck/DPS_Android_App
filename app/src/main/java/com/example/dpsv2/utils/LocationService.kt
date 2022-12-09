@@ -59,15 +59,15 @@ class LocationService: Service() {
             .getLocationUpdates(10000L)
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
-                val lat = location.latitude.toString()
-                val long = location.longitude.toString()
+                val lat = location.latitude
+                val long = location.longitude
 //                val updatedNotification = notification.setContentText(
 //                    "Location: ($lat, $long)"
 //                )
 //                notificationManager.notify(1, updatedNotification.build())
                 Log.d("LOCATION", "start: $lat$long")
-                database.child("driver").child("latitude").setValue(lat.toString())
-                database.child("driver").child("longitute").setValue(long.toString())
+                database.child("driver").child("latitude").setValue(lat)
+                database.child("driver").child("longitude").setValue(long)
             }
             .launchIn(serviceScope)
 
