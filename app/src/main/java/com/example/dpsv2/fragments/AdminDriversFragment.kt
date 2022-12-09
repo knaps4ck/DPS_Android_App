@@ -2,7 +2,9 @@ package com.example.dpsv2.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dpsv2.R
 import com.example.dpsv2.adapters.AdminDriverAdapter
-import com.example.dpsv2.adapters.AdminPrevRidesAdapter
 import com.example.dpsv2.utils.Constants
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -53,7 +54,7 @@ class AdminDriversFragment : Fragment() {
                         val address = geocoder.getFromLocation(lat as Double, long as Double, 1)
                         driverAddList.add(address[0].getAddressLine(0))
                     }
-                    adminadapter = AdminDriverAdapter(driverAddList, driverList)
+                    adminadapter = AdminDriverAdapter(driverList, driverAddList, ::onCheckOnMapClickCallback)
                     recyclerView.adapter = adminadapter
                     adminadapter.notifyDataSetChanged()
                 }
@@ -68,6 +69,12 @@ class AdminDriversFragment : Fragment() {
         return view
     }
 
+    fun onCheckOnMapClickCallback(address: String) {
+        val gmmIntentUri = Uri.parse("geo:0,0?q=${address}")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
+    }
 
 
 }
