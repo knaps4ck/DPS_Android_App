@@ -12,10 +12,9 @@ import com.example.dpsv2.R
 import com.example.dpsv2.fragments.AdminDriversFragment
 import com.example.dpsv2.models.Rides
 
-private class AdminDriverAdapter(private var itemlist: ArrayList<Rides>,
-                                 private val accept_callback : (Rides) -> Unit,
-                                 private val reject_callback : (Rides) -> Unit,
-                                 private val context : Context
+internal class AdminDriverAdapter(private var driverList: ArrayList<String>,
+                                  private var driverAddressList: Array<String>
+
 ):
     RecyclerView.Adapter<AdminDriverAdapter.MyViewHolder>() {
     internal inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,19 +26,18 @@ private class AdminDriverAdapter(private var itemlist: ArrayList<Rides>,
         @NonNull
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminDriverAdapter.MyViewHolder {
             val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.admin_ride_card, parent, false)
+                .inflate(R.layout.admin_driver_card, parent, false)
 
             return MyViewHolder(itemView)
         }
 
         @SuppressLint("ResourceAsColor")
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val item = itemlist[position]
-            holder.driverName.text = item.source
-            holder.driverAddress.text = item.destination
+            holder.driverName.text = driverAddressList[position]
+            holder.driverAddress.text =  driverList[position]
         }
 
         override fun getItemCount(): Int {
-            return itemlist.size
+            return driverList.size
         }
 }

@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dpsv2.R
+import com.example.dpsv2.adapters.AdminDriverAdapter
+import com.example.dpsv2.adapters.AdminPrevRidesAdapter
 import com.example.dpsv2.utils.Constants
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,6 +26,7 @@ class AdminDriversFragment : Fragment() {
     private lateinit var classConstants: Constants
     private lateinit var driverAddList:  ArrayList<String>
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adminadapter: AdminDriverAdapter
     val database = FirebaseDatabase.getInstance()
 
     override fun onCreateView(
@@ -50,6 +53,9 @@ class AdminDriversFragment : Fragment() {
                         val address = geocoder.getFromLocation(lat as Double, long as Double, 1)
                         driverAddList.add(address[0].getAddressLine(0))
                     }
+                    adminadapter = AdminDriverAdapter(driverAddList, driverList)
+                    recyclerView.adapter = adminadapter
+                    adminadapter.notifyDataSetChanged()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -57,6 +63,8 @@ class AdminDriversFragment : Fragment() {
                 }
             })
         }
+        val activity = activity as Context
+        recyclerView.layoutManager = LinearLayoutManager(activity)
         return view
     }
 
