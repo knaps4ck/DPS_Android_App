@@ -105,7 +105,7 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
         val apiKey = BuildConfig.apiKey
         if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, apiKey)
+            Places.initialize(applicationContext, "AIzaSyDBBg7jEIDF6a_q5KFzrHe-WZFZ5mtYdxs")
         }
 //        val placesClient = Places.createClient(this)
         val autocompleteSupportFragment = supportFragmentManager
@@ -159,7 +159,6 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
             names
         )
         listview.adapter = arrayAdapter
-
     }
 
     private val locationListener: LocationListener = object : LocationListener {

@@ -3,6 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Bharat/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.3625" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/activity_admin_home.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/activity_driver_home.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/activity_student_profile.xml" value="0.3625" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/admin_driver_card.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/admin_driver_dropdown_list.xml" value="0.3342391304347826" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/admin_drop_down_list.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/admin_prev_ride_card.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/admin_ride_card.xml" value="0.33" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/driver_ride_card.xml" value="0.3625" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/fragment_admin_drivers.xml" value="0.33" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/fragment_admin_previous_rides.xml" value="0.33" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/fragment_admin_requests.xml" value="0.33" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/fragment_driver_drops.xml" value="0.3625" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/fragment_driver_pickup.xml" value="0.33" />
+        <entry key="..\:/Users/Bharat/OneDrive - Syracuse University/Documents/Fall 22/Android/Final_project/DPS_Android_App/app/src/main/res/layout/fragment_driver_previous_rides.xml" value="0.3625" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/drawable/dialog_rounded.xml" value="0.125" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/drawable/edit_text_background.xml" value="0.125" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/drawable/gradient.xml" value="0.125" />
