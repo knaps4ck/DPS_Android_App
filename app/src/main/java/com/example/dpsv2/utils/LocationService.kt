@@ -67,7 +67,7 @@ class LocationService: Service() {
 //                notificationManager.notify(1, updatedNotification.build())
                 Log.d("LOCATION", "start: $lat$long")
                 database.child("driver").child("latitude").setValue(lat.toString())
-                database.child("driver").child("longitute").setValue(long.toString())
+                database.child("driver").child("longitude").setValue(long.toString())
             }
             .launchIn(serviceScope)
 

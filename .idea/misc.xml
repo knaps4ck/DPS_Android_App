@@ -20,6 +20,8 @@
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/fragment_driver_pickup.xml" value="0.15564373897707232" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/fragment_driver_previous_rides.xml" value="0.15564373897707232" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/student_home_bottom_sheet.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.137890625" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-sw600dp/activity_student_profile.xml" value="0.137890625" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-sw600dp/fragment_driver_drops.xml" value="0.10655737704918032" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_admin_home.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_driver_home.xml" value="0.14130434782608695" />
@@ -29,6 +31,9 @@
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_student_profile.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_student_ride_review.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_student_ride_status.xml" value="0.22" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/admin_drop_down_list.xml" value="0.18385416666666668" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/admin_prev_ride_card.xml" value="0.18385416666666668" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/admin_ride_card.xml" value="0.18385416666666668" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/driver_ride_card.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/fragment_admin_drivers.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/fragment_admin_previous_rides.xml" value="0.14130434782608695" />

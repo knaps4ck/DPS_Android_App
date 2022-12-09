@@ -28,6 +28,7 @@ class StudentRideReview : AppCompatActivity() {
         setContentView(R.layout.activity_student_ride_review)
         val source = intent.extras!!.getString("DESTINATION")
         val sharedpref = this.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
+        val prefeditor = sharedpref.edit()
         val destination = sharedpref.getString("STUDENT_ADDRESS","1")
 
         startlocation = findViewById(R.id.start_location_edittext)
@@ -52,10 +53,10 @@ class StudentRideReview : AppCompatActivity() {
                 )
                 database.child("rides").child(uuid).setValue(ride)
                 Toast.makeText(this, "DAta sent",Toast.LENGTH_SHORT).show()
-                sharedpref.edit().putString("RECENT_RIDE_ID",uuid)
-                sharedpref.edit().putString("RECENT_SOURCE",source)
-                sharedpref.edit().putString("RECENT_DESTINATION",destination)
-                sharedpref.edit().apply()
+                prefeditor.putString("RECENT_RIDE_ID",uuid)
+                prefeditor.putString("RECENT_SOURCE",source)
+                prefeditor.putString("RECENT_DESTINATION",destination)
+                prefeditor.apply()
 
                 val intent = Intent(this@StudentRideReview, StudentRideStatus::class.java)
                 startActivity(intent)

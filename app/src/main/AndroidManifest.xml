@@ -47,6 +47,7 @@
             android:label="@string/title_activity_student_home" />
         <activity
             android:name=".activities.StudentProfile"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".activities.IntroSliderActivity"

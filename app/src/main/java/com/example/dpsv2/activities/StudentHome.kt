@@ -3,6 +3,7 @@ package com.example.dpsv2.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -55,7 +56,7 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val sharedpref = this?.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
+        val sharedpref = this.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
         val names = sharedpref.getStringSet("RECENT_SEARCHES", emptySet())!!.toTypedArray()
         Log.e("RECENT_SEARCHES_FETCHED",names.contentToString())
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
@@ -96,7 +97,7 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, apiKey)
         }
-        val placesClient = Places.createClient(this)
+//        val placesClient = Places.createClient(this)
         val autocompleteSupportFragment = supportFragmentManager
             .findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment?
         val fView : View? = autocompleteSupportFragment!!.view
@@ -105,9 +106,9 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
 
         etext!!.setTextColor( Color.parseColor("#000000"))
-        etext!!.setText("Or Search Different Destination")
-        etext!!.background = getDrawable(R.drawable.edit_text_background)
-        autocompleteSupportFragment!!.setPlaceFields(
+        etext.setText("Or Search Different Destination")
+        etext.background = getDrawable(R.drawable.edit_text_background)
+        autocompleteSupportFragment.setPlaceFields(
             listOf(
                 Place.Field.NAME,
                 Place.Field.ADDRESS,
@@ -118,12 +119,12 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
                 Place.Field.USER_RATINGS_TOTAL
             )
         )
-        autocompleteSupportFragment!!.setOnPlaceSelectedListener(object : PlaceSelectionListener{
+        autocompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener{
             override fun onPlaceSelected(p0: Place) {
                 Log.i(TAG, "Place: ${p0.name}, ${p0.latLng}")
                 var recent_searches = sharedpref.getStringSet("RECENT_SEARCHES", emptySet())!!.toMutableSet()
                 Log.e("RECENT_SEARCHES",recent_searches.toString())
-                recent_searches!!.add(p0.address)
+                recent_searches.add(p0.address)
                 Log.e("RECENT_SEARCHES_NEW",recent_searches.toString())
                 sharedpref.edit().putStringSet("RECENT_SEARCHES",recent_searches)
                 sharedpref.edit().apply()
@@ -170,7 +171,7 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+//        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
     }
@@ -185,20 +186,16 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.student_prev_ride -> return true
-            R.id.student_view_cancel_ride -> return true
+            R.id.student_view_cancel_ride -> {
+                val intent = Intent(this@StudentHome, StudentRideStatus::class.java)
+                startActivity(intent)
+            }
             R.id.student_edit_profile -> {
-
                 val intent = Intent(this@StudentHome, StudentProfile::class.java)
                 startActivity(intent)
             }
             R.id.student_signout -> {
                 FirebaseAuth.getInstance().signOut()
-                // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-
-                // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build()
@@ -216,6 +213,42 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
+
+        builder.setTitle("Log Out ?")
+        builder.setMessage("Are you sure you want to log out?")
+
+        builder.setPositiveButton(
+            "YES",
+            DialogInterface.OnClickListener { dialog, which -> // Do nothing but close the dialog
+                FirebaseAuth.getInstance().signOut()
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build()
+                // Build a GoogleSignInClient with the options specified by gso.
+                val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+                mGoogleSignInClient.signOut().addOnCompleteListener(this)
+                {
+                    val intent = Intent(this@StudentHome, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
+                dialog.dismiss()
+                finish()
+            })
+
+        builder.setNegativeButton(
+            "NO",
+            DialogInterface.OnClickListener { dialog, _ -> // Do nothing
+                dialog.dismiss()
+            })
+
+        builder.create()?.show()
     }
 
     override fun onResume() {
