@@ -17,6 +17,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -56,6 +57,15 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                signout()
+            }
+        }
+        this.onBackPressedDispatcher.addCallback(this, callback)
+
+
         val sharedpref = this.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
         val names = sharedpref.getStringSet("RECENT_SEARCHES", emptySet())!!.toTypedArray()
         Log.e("RECENT_SEARCHES_FETCHED",names.contentToString())
@@ -195,19 +205,7 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
                 startActivity(intent)
             }
             R.id.student_signout -> {
-                FirebaseAuth.getInstance().signOut()
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build()
-                // Build a GoogleSignInClient with the options specified by gso.
-                val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-                mGoogleSignInClient.signOut().addOnCompleteListener(this)
-                {
-                    val intent = Intent(this@StudentHome, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    startActivity(intent)
-                }
+                signout()
 
             }
 
@@ -215,8 +213,7 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    fun signout() {
         val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
 
         builder.setTitle("Log Out ?")
