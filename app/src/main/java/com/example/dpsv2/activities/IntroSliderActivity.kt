@@ -1,7 +1,6 @@
 package com.example.dpsv2.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -15,6 +14,7 @@ import com.cuneytayyildiz.onboarder.utils.color
 import com.example.dpsv2.MainActivity
 import com.example.dpsv2.R
 
+
 class IntroSliderActivity : OnboarderActivity(), OnboarderPageChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,13 +25,25 @@ class IntroSliderActivity : OnboarderActivity(), OnboarderPageChangeListener {
         initOnboardingPages(pages)
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        val isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+            .getBoolean("isFirstRun", true)
+        if (!isFirstRun) {
+            startActivity(Intent(this@IntroSliderActivity, MainActivity::class.java))
+        }
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+            .putBoolean("isFirstRun", false).commit()
+    }
+
     private fun createOnboarderPages(): MutableList<OnboarderPage> {
         return mutableListOf(
             onboarderPage {
                 backgroundColor = color(R.color.teal_200)
 
                 image = OnboarderImage(
-                    imageResId = R.drawable.ic_launcher_background
+                    imageResId = R.drawable.orangesafe
                 )
 
                 title = OnboarderText(
@@ -50,7 +62,7 @@ class IntroSliderActivity : OnboarderActivity(), OnboarderPageChangeListener {
                 backgroundColor = color(android.R.color.holo_orange_dark)
 
                 image = OnboarderImage(
-                    imageResId = R.drawable.ic_launcher_background
+                    imageResId = R.drawable.delivery
                 )
 
                 title = OnboarderText(
@@ -69,7 +81,7 @@ class IntroSliderActivity : OnboarderActivity(), OnboarderPageChangeListener {
                 backgroundColor = color(android.R.color.holo_purple)
 
                 image = OnboarderImage(
-                    imageResId = R.drawable.ic_launcher_background
+                    imageResId = R.drawable.driver
                 )
 
                 title = OnboarderText(

@@ -5,7 +5,22 @@
       <map>
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/drawable/dialog_rounded.xml" value="0.125" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/drawable/edit_text_background.xml" value="0.125" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/drawable/gradient.xml" value="0.125" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.125" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_admin_home.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_driver_home.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_intro_slider.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_main.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_student_home.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_student_profile.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_student_ride_review.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/activity_student_ride_status.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/driver_ride_card.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/fragment_driver_drops.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/fragment_driver_pickup.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/fragment_driver_previous_rides.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-land/student_home_bottom_sheet.xml" value="0.15564373897707232" />
+        <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout-sw600dp/fragment_driver_drops.xml" value="0.10655737704918032" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_admin_home.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_driver_home.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/naidu/OneDrive/Desktop/DPSv2/app/src/main/res/layout/activity_intro_slider.xml" value="0.14130434782608695" />
@@ -31,5 +46,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.14130434782608695" />
+      </ProjectState>
+    </option>
   </component>
 </project>
