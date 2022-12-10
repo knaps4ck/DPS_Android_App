@@ -90,7 +90,7 @@ class AdminRequestsFragment : Fragment() {
         database.child("rides")
             .child(ride.rideID!!)
             .child("ridestatus")
-            .setValue(classConstants.VERIFIED_RIDE_STATUS)
+            .setValue(classConstants.PICKUP_RIDE_STATUS)
 
         adminreqadapter.notifyDataSetChanged()
 
