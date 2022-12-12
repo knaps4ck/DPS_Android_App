@@ -41,7 +41,11 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class StudentHome : AppCompatActivity(), OnMapReadyCallback {
@@ -49,6 +53,9 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityStudentHomeBinding
     private lateinit var bottomSheetDialog : View
+    private lateinit var recent_searches : ArrayList<String>
+    private lateinit var listview : ListView
+    private lateinit var arrayAdapter : ArrayAdapter<String>
 
     private var locationManager : LocationManager? = null
 
@@ -57,6 +64,8 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadRecents()
+
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -67,8 +76,9 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
 
         val sharedpref = this.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
-        val names = sharedpref.getStringSet("RECENT_SEARCHES", emptySet())!!.toTypedArray()
-        Log.e("RECENT_SEARCHES_FETCHED",names.contentToString())
+        val sharedprefeditor = sharedpref.edit()
+
+
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -132,16 +142,9 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
         autocompleteSupportFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener{
             override fun onPlaceSelected(p0: Place) {
                 Log.i(TAG, "Place: ${p0.name}, ${p0.latLng}")
-                var recent_searches = sharedpref.getStringSet("RECENT_SEARCHES", emptySet())!!.toMutableSet()
-                Log.e("RECENT_SEARCHES",recent_searches.toString())
-                recent_searches.add(p0.address)
-                Log.e("RECENT_SEARCHES_NEW",recent_searches.toString())
-                sharedpref.edit().putStringSet("RECENT_SEARCHES",recent_searches)
-                sharedpref.edit().apply()
-
+                p0.address?.let { saveRecents(it) }
                 val intent = Intent(this@StudentHome, StudentRideReview::class.java)
                 intent.putExtra("DESTINATION", p0.address)
-
                 startActivity(intent)
 
             }
@@ -152,13 +155,19 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
         })
 
-        val listview: ListView = findViewById(R.id.recentSearches_listview)
-        val arrayAdapter: ArrayAdapter<String> = ArrayAdapter(
+        listview = findViewById(R.id.recentSearches_listview)
+        arrayAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            names
+            recent_searches.toList()
         )
         listview.adapter = arrayAdapter
+        listview.setOnItemClickListener { parent, view, position, id ->
+            val element = parent.getItemAtPosition(position).toString()
+            val intent1 = Intent(this@StudentHome, StudentRideReview::class.java)
+            intent1.putExtra("DESTINATION", element)
+            startActivity(intent1)
+        }
     }
 
     private val locationListener: LocationListener = object : LocationListener {
@@ -180,7 +189,6 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-//        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
     }
@@ -225,7 +233,6 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build()
-                // Build a GoogleSignInClient with the options specified by gso.
                 val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
                 mGoogleSignInClient.signOut().addOnCompleteListener(this)
@@ -249,15 +256,42 @@ class StudentHome : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
+        loadRecents()
+        arrayAdapter.notifyDataSetChanged()
         val curr_address = findViewById<TextView>(R.id.current_address)
         curr_address.setOnClickListener {
             if (curr_address.text != "Fetching Location ...") {
+                saveRecents(curr_address.text.toString())
                 val intent = Intent(this@StudentHome, StudentRideReview::class.java)
                 intent.putExtra("DESTINATION", curr_address.text)
                 startActivity(intent)
             }else{
                 Toast.makeText(this,"Please wait for Location...", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun saveRecents(address: String) {
+        val sharedpref = applicationContext.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
+        val sharedprefeditor = sharedpref.edit()
+        val gson = Gson()
+        recent_searches.add(address)
+        val json = gson.toJson(recent_searches)
+        sharedprefeditor.putString("RECENT_SEARCHES", json)
+        sharedprefeditor.apply()
+        loadRecents()
+    }
+
+    fun loadRecents() {
+        val sharedpref = applicationContext.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
+        val gson = Gson()
+        val json = sharedpref.getString("RECENT_SEARCHES",null)
+        val type  = object : TypeToken<ArrayList<String>>() {}.type
+        if (json != null){
+            recent_searches = gson.fromJson(json, type)
+        }else{
+            recent_searches = arrayListOf<String>()
         }
     }
 }

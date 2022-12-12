@@ -105,7 +105,6 @@ class IntroSliderActivity : OnboarderActivity(), OnboarderPageChangeListener {
 
 
     override fun onFinishButtonPressed() {
-        Toast.makeText(this, "Finish button was pressed", Toast.LENGTH_SHORT).show()
         finish()
         val intent = Intent(this@IntroSliderActivity, MainActivity::class.java)
         startActivity(intent)

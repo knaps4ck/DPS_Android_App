@@ -4,12 +4,22 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.dpsv2.R
+import com.example.dpsv2.models.ApiResponse
+import com.example.dpsv2.models.Student
+import com.example.dpsv2.network.ApiInterface
+import com.example.dpsv2.network.RetrofitClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class StudentProfile : AppCompatActivity() {
     private lateinit var etName: EditText
@@ -18,6 +28,7 @@ class StudentProfile : AppCompatActivity() {
     private lateinit var etContactNo:EditText
     private lateinit var etEmergency: EditText
     private lateinit var etSUID: EditText
+    private var student: Student? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +37,7 @@ class StudentProfile : AppCompatActivity() {
 
     }
     private fun viewInitializations() {
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
 
         etSUID = findViewById(R.id.et_suid)
         etName = findViewById(R.id.et_first_name)
@@ -36,22 +48,50 @@ class StudentProfile : AppCompatActivity() {
 
         val sharedpref = this?.getSharedPreferences("dpsv2",MODE_PRIVATE) ?: return
         etSUID.setText(sharedpref.getString("STUDENT_SUID",""))
-        etName.setText(sharedpref.getString("STUDENT_NAME",""))
-        etAddress.setText(sharedpref.getString("STUDENT_ADDRESS",""))
-        val acct = GoogleSignIn.getLastSignedInAccount(this)
+        if (sharedpref.getString("STUDENT_SUID","") != "" && acct != null) {
+            var retrofit = RetrofitClient.getInstance().create(ApiInterface::class.java)
+            GlobalScope.launch {
+                try {
+                    val response = acct.email?.let { retrofit.getStudentByEmail(it) }
+                    if (response != null) {
+                        if (response.isSuccess) {
 
-        if (acct != null) {
-            etEmail.setText(acct.email)
+                            Log.d("STUDENTTT", response.isSuccess.toString())
+                            student= response.result?.getStudent()
+                            Log.e("STUDENT",student.toString())
+                            etName.setText(student!!.name)
+                            etAddress.setText(student!!.address)
+                            etSUID.setText(student!!.suid.toString())
+                            etContactNo.setText(student!!.contact_number)
+                            etEmergency.setText(student!!.emergency_number)
+                            etEmail.setText(student!!.email)
+
+                        } else {
+                            Toast.makeText(
+                                this@StudentProfile,
+                                response.error.toString(),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }catch (Ex:Exception){
+                    Log.e("Error",Ex.toString())
+
+                }
+            }
         }else{
-            etEmail.setText(sharedpref.getString("STUDENT_EMAIL",""))
+            etName.setText(sharedpref.getString("STUDENT_NAME",""))
+            etAddress.setText(sharedpref.getString("STUDENT_ADDRESS",""))
+
+
+            if (acct != null) {
+                etEmail.setText(acct.email)
+            }else{
+                etEmail.setText(sharedpref.getString("STUDENT_EMAIL",""))
+            }
+            etContactNo.setText(sharedpref.getString("STUDENT_NUMBER",""))
+            etEmergency.setText(sharedpref.getString("STUDENT_EMERGENCY",""))
         }
-        etContactNo.setText(sharedpref.getString("STUDENT_NUMBER",""))
-        etEmergency.setText(sharedpref.getString("STUDENT_EMERGENCY",""))
-
-
-        // To show back button in actionbar
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
     }
 
     // Checking if the input in form is valid
